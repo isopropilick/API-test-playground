@@ -31,6 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-/spring-shell.log
+**/spring-shell.log
 
-dummyAPI/spring-shell.log
+**/.idea/
