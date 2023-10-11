@@ -1,13 +1,16 @@
 package com.octanewolf.dummyapi;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 @RestController
 @RequestMapping("/file")
@@ -15,9 +18,12 @@ public class fileController {
     @ApiOperation("Create a text file")
     @PostMapping("/create")
     public ResponseEntity<String> createTextFile(
-            @RequestBody String content,
+            @RequestBody(required = false) String content,
             @RequestHeader("file-name") String fileName,
             @RequestHeader("directory") String directoryPath) {
+        if (content == null || content.isEmpty()) {
+            throw new MissingRequestBodyException();
+        }
         try {
             String filePath = directoryPath + fileName;
             Files.write(Paths.get(filePath), content.getBytes());
